@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.telewave.twweb" />
+	<!-- 引入配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+	</bean>
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${dataSource.diverClassName}" />
+		<property name="url" value="${dataSource.url}" />
+		<property name="username" value="${dataSource.username}" />
+		<property name="password" value="${dataSource.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${dataSource.initialSize}"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${dataSource.maxActive}"></property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="${dataSource.maxIdle}"></property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${dataSource.minIdle}"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${dataSource.maxWait}"></property>
+		<!-- 获取链接最大等待时间 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="33" />
+		<property name="validationQuery" value="${validationQuery}"></property>
+		<property name="testOnBorrow" value="false"></property>
+		<property name="testOnReturn" value="false"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<property name="minEvictableIdleTimeMillis" value="2520000"></property>
+		<property name="removeAbandoned" value="true"></property>
+		<property name="removeAbandonedTimeout" value="1800"></property>
+		<property name="logAbandoned" value="true"></property>
+		<property name="filters" value="mergeStart"></property>
+	</bean>
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath:com/telewave/twweb/firstds/mapper/*.xml"></property>
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.telewave.twweb.firstds.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 上报市局三台库 -->
+	<!-- <bean id="secondsDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${dataSource_sjstk.diverClassName}" />
+		<property name="url" value="${dataSource_sjstk.url}" />
+		<property name="username" value="${dataSource_sjstk.username}" />
+		<property name="password" value="${dataSource_sjstk.password}" />
+		<property name="initialSize" value="${dataSource_sjstk.initialSize}"></property>
+		<property name="maxActive" value="${dataSource_sjstk.maxActive}"></property>
+		<property name="maxIdle" value="${dataSource_sjstk.maxIdle}"></property>
+		<property name="minIdle" value="${dataSource_sjstk.minIdle}"></property>
+		<property name="maxWait" value="${dataSource_sjstk.maxWait}"></property>
+		获取链接最大等待时间
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="33" />
+		<property name="validationQuery" value="${validationQuery}"></property>
+		<property name="testOnBorrow" value="false"></property>
+		<property name="testOnReturn" value="false"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<property name="minEvictableIdleTimeMillis" value="2520000"></property>
+		<property name="removeAbandoned" value="true"></property>
+		<property name="removeAbandonedTimeout" value="1800"></property>
+		<property name="logAbandoned" value="true"></property>
+		<property name="filters" value="mergeStart"></property>
+	</bean>
+	<bean id="sqlSessionFactory_second" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="secondsDataSource" />
+		<property name="mapperLocations" value="classpath:com/telewave/twweb/secondds/mapper/*.xml"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="com.telewave.twweb.secondds.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_second"></property>
+	</bean>
+	<bean id="transactionManager_second"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="secondsDataSource" />
+	</bean> -->
+
+	<!-- 上报市局三台库 -->
+	<!-- <bean id="thirdDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${dataSource_hzk.diverClassName}" />
+		<property name="url" value="${dataSource_hzk.url}" />
+		<property name="username" value="${dataSource_hzk.username}" />
+		<property name="password" value="${dataSource_hzk.password}" />
+		初始化连接大小
+		<property name="initialSize" value="${dataSource_hzk.initialSize}"></property>
+		连接池最大数量
+		<property name="maxActive" value="${dataSource_hzk.maxActive}"></property>
+		连接池最大空闲
+		<property name="maxIdle" value="${dataSource_hzk.maxIdle}"></property>
+		连接池最小空闲
+		<property name="minIdle" value="${dataSource_hzk.minIdle}"></property>
+		获取连接最大等待时间
+		<property name="maxWait" value="${dataSource_hzk.maxWait}"></property>
+		获取链接最大等待时间
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="33" />
+		<property name="validationQuery" value="${validationQuery}"></property>
+		<property name="testOnBorrow" value="false"></property>
+		<property name="testOnReturn" value="false"></property>
+		<property name="testWhileIdle" value="true"></property>
+
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<property name="minEvictableIdleTimeMillis" value="2520000"></property>
+
+		<property name="removeAbandoned" value="true"></property>
+		<property name="removeAbandonedTimeout" value="1800"></property>
+		<property name="logAbandoned" value="true"></property>
+		<property name="filters" value="mergeStart"></property>
+	</bean>
+ -->
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<!-- <bean id="sqlSessionFactory_thrid" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="thirdDataSource" />
+		自动扫描mapping.xml文件
+		<property name="mapperLocations" value="classpath:com/telewave/twweb/thirdds/mapper/*.xml"></property>
+	</bean>
+
+	DAO接口所在包名，Spring会自动查找其下的类
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.telewave.twweb.thirdds.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_third"></property>
+	</bean>
+	(事务管理)transaction manager, use JtaTransactionManager for global tx
+	<bean id="transactionManager_third"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="thirdDataSource" />
+	</bean> -->
+
+</beans>

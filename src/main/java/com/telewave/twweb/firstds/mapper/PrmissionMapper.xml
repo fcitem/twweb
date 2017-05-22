@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.telewave.twweb.firstds.dao.PrmissionMapper" >
+  <resultMap id="BaseResultMap" type="com.telewave.twweb.firstds.entity.Prmission" >
+    <id column="PERMISSION_ID" property="permissionId" jdbcType="VARCHAR" />
+    <result column="PERMISSION_NAME" property="permissionName" jdbcType="OTHER" />
+    <result column="DECSCRIPTION" property="decscription" jdbcType="OTHER" />
+    <result column="PERMISSION_DISPLAY" property="permissionDisplay" jdbcType="OTHER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PERMISSION_ID, PERMISSION_NAME, DECSCRIPTION, PERMISSION_DISPLAY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.telewave.twweb.firstds.entity.PrmissionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from TWWEB.SYS_PERMISSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from TWWEB.SYS_PERMISSION
+    where PERMISSION_ID = #{permissionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from TWWEB.SYS_PERMISSION
+    where PERMISSION_ID = #{permissionId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.telewave.twweb.firstds.entity.PrmissionExample" >
+    delete from TWWEB.SYS_PERMISSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.telewave.twweb.firstds.entity.Prmission" >
+    insert into TWWEB.SYS_PERMISSION (PERMISSION_ID, PERMISSION_NAME, DECSCRIPTION, 
+      PERMISSION_DISPLAY)
+    values (#{permissionId,jdbcType=VARCHAR}, #{permissionName,jdbcType=OTHER}, #{decscription,jdbcType=OTHER}, 
+      #{permissionDisplay,jdbcType=OTHER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.telewave.twweb.firstds.entity.Prmission" >
+    insert into TWWEB.SYS_PERMISSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        PERMISSION_ID,
+      </if>
+      <if test="permissionName != null" >
+        PERMISSION_NAME,
+      </if>
+      <if test="decscription != null" >
+        DECSCRIPTION,
+      </if>
+      <if test="permissionDisplay != null" >
+        PERMISSION_DISPLAY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=OTHER},
+      </if>
+      <if test="decscription != null" >
+        #{decscription,jdbcType=OTHER},
+      </if>
+      <if test="permissionDisplay != null" >
+        #{permissionDisplay,jdbcType=OTHER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.telewave.twweb.firstds.entity.PrmissionExample" resultType="java.lang.Integer" >
+    select count(*) from TWWEB.SYS_PERMISSION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update TWWEB.SYS_PERMISSION
+    <set >
+      <if test="record.permissionId != null" >
+        PERMISSION_ID = #{record.permissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionName != null" >
+        PERMISSION_NAME = #{record.permissionName,jdbcType=OTHER},
+      </if>
+      <if test="record.decscription != null" >
+        DECSCRIPTION = #{record.decscription,jdbcType=OTHER},
+      </if>
+      <if test="record.permissionDisplay != null" >
+        PERMISSION_DISPLAY = #{record.permissionDisplay,jdbcType=OTHER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update TWWEB.SYS_PERMISSION
+    set PERMISSION_ID = #{record.permissionId,jdbcType=VARCHAR},
+      PERMISSION_NAME = #{record.permissionName,jdbcType=OTHER},
+      DECSCRIPTION = #{record.decscription,jdbcType=OTHER},
+      PERMISSION_DISPLAY = #{record.permissionDisplay,jdbcType=OTHER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.telewave.twweb.firstds.entity.Prmission" >
+    update TWWEB.SYS_PERMISSION
+    <set >
+      <if test="permissionName != null" >
+        PERMISSION_NAME = #{permissionName,jdbcType=OTHER},
+      </if>
+      <if test="decscription != null" >
+        DECSCRIPTION = #{decscription,jdbcType=OTHER},
+      </if>
+      <if test="permissionDisplay != null" >
+        PERMISSION_DISPLAY = #{permissionDisplay,jdbcType=OTHER},
+      </if>
+    </set>
+    where PERMISSION_ID = #{permissionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.telewave.twweb.firstds.entity.Prmission" >
+    update TWWEB.SYS_PERMISSION
+    set PERMISSION_NAME = #{permissionName,jdbcType=OTHER},
+      DECSCRIPTION = #{decscription,jdbcType=OTHER},
+      PERMISSION_DISPLAY = #{permissionDisplay,jdbcType=OTHER}
+    where PERMISSION_ID = #{permissionId,jdbcType=VARCHAR}
+  </update>
+</mapper>
